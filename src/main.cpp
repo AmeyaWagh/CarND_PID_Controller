@@ -73,7 +73,8 @@ int main()
 
           ///@todo dynamic throttle
           // decide throttle values
-
+          double MAX_SPEED = 0.3;
+          double dynamic_throttle = MAX_SPEED*cos(deg2rad(angle));
 
 
           
@@ -82,7 +83,8 @@ int main()
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.3;
+//          msgJson["throttle"] = 0.3;
+          msgJson["throttle"] = dynamic_throttle;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
