@@ -45,21 +45,25 @@ CarController::processController(std::string socket_msg){
         speed = std::stod(j[1]["speed"].get<std::string>());
         angle = std::stod(j[1]["steering_angle"].get<std::string>());
 
-        // update error
+        // update error for steering pid controller
         pid.UpdateError(cte);
         steer_value = -1*pid.TotalError();
 
-        double dynamic_throttle = MAX_SPEED*cos(deg2rad(angle));
-        speed_cte = speed - dynamic_throttle+0.05;
+        // update throttle pid controller
+        speed_cte = speed - MAX_SPEED*cos(deg2rad(angle))+0.1;
         speed_pid.UpdateError(speed_cte);
         dynamic_throttle = speed_pid.TotalError();
 
+        // clip values to operational limits
         clip_steer_value();
-        dynamic_throttle = clip_throttle_value(dynamic_throttle);
+        clip_throttle_value();
 
 
-        std::cout << "[CTE]" << cte << " [Steering Value]" << steer_value << std::endl;
+        // log values to stdout
+//        std::cout << "[CTE]" << cte << " [Steering Value]" << steer_value << std::endl;
+        printf("[CTE] %2.3f [Steering] %2.3f\n",cte,steer_value);
 
+        // populate control message
         control_msg["steering_angle"] = steer_value;
         control_msg["throttle"] = dynamic_throttle;
 
@@ -78,15 +82,14 @@ CarController::clip_steer_value(){
     }
 }
 
-double
-CarController::clip_throttle_value(double throttle){
-    if(throttle > MAX_SPEED){
-        throttle=MAX_SPEED;
+void
+CarController::clip_throttle_value(){
+    if(dynamic_throttle > MAX_SPEED){
+        dynamic_throttle=MAX_SPEED;
     }
-    else if(throttle< 0){
-        throttle = -0.05;
+    else if(dynamic_throttle< 0){
+        dynamic_throttle = -0.05;
     }
-    return throttle;
 }
 
 bool

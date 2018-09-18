@@ -22,6 +22,7 @@ private:
     double speed;
     double angle;
     double steer_value;
+    double dynamic_throttle;
     PID pid;
     PID speed_pid;
     json control_msg;
@@ -34,7 +35,7 @@ public:
     json processController(std::string socket_msg);
     bool isTelemetry();
     void clip_steer_value();
-    double clip_throttle_value(double throttle);
+    void clip_throttle_value();
 };
 
 #endif
