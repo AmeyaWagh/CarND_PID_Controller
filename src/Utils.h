@@ -23,11 +23,11 @@ private:
     double angle;
     double steer_value;
     double dynamic_throttle;
-    PID pid;
-    PID speed_pid;
-    json control_msg;
     bool is_telemetry;
     double MAX_SPEED;
+    PID steer_pid;
+    PID speed_pid;
+    json control_msg;
 
 public:
     CarController(double Kp, double Ki, double Kd,
