@@ -1,98 +1,47 @@
-# CarND-Controls-PID
+# PID Controller
 Self-Driving Car Engineer Nanodegree Program
 
 ---
 
-## Dependencies
+Video
 
-* cmake >= 3.5
- * All OSes: [click here for installation instructions](https://cmake.org/install/)
-* make >= 4.1(mac, linux), 3.81(Windows)
-  * Linux: make is installed by default on most Linux distros
-  * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
-  * Windows: [Click here for installation instructions](http://gnuwin32.sourceforge.net/packages/make.htm)
-* gcc/g++ >= 5.4
-  * Linux: gcc / g++ is installed by default on most Linux distros
-  * Mac: same deal as make - [install Xcode command line tools]((https://developer.apple.com/xcode/features/)
-  * Windows: recommend using [MinGW](http://www.mingw.org/)
-* [uWebSockets](https://github.com/uWebSockets/uWebSockets)
-  * Run either `./install-mac.sh` or `./install-ubuntu.sh`.
-  * If you install from source, checkout to commit `e94b6e1`, i.e.
-    ```
-    git clone https://github.com/uWebSockets/uWebSockets 
-    cd uWebSockets
-    git checkout e94b6e1
-    ```
-    Some function signatures have changed in v0.14.x. See [this PR](https://github.com/udacity/CarND-MPC-Project/pull/3) for more details.
-* Simulator. You can download these from the [project intro page](https://github.com/udacity/self-driving-car-sim/releases) in the classroom.
+## PID Controller
+The Proportional Integral derivative controller is a highly robust controller used
+in large number of control systems applications.
 
-There's an experimental patch for windows in this [PR](https://github.com/udacity/CarND-PID-Control-Project/pull/3)
+![PID_controller](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXkAAACGCAMAAAAPbgp3AAABWVBMVEX///8AAADM/6qv6d3/fyr/3VXy8vJNTU1ZWVmx7OCxsbHFxcXi4uL29vbP/61gYGDc3NwODg70eiijzIjV/7ErNiSaTRqlUBVPYl4ZIB+Sw7l4eHiKiopxcXHr6+vS0tJpaWl2dnZkhX5DQ0OAQBWAq6L/41ezt7hebVSJOgC/v7/hcCWlpaWRkZGcnJyHh4c2NjbIZCF6mGYpKSnPtEWpqakZDQSMurAkJCTfwkrA8KD52FOazMLrzE67XR+j2c6Yvn9bTx68oz94n5dLQRmgijWIdS3VaiN3ZyhNQxmxmTuKRRdcenRvk4yKrXNCUjdngVZUaUa14pebwoE0LRFkVh8PGRgVDwBRFACSfzE6MxAUFRtPQgAsKR19bSoxQD1JWzwhHQtje1I1GwleLw9JJQwmEwYwPChwOBIYHRM+HwpcLg8AEhZhUQswLBpBOR1DOAAvMz1OVEpH95A7AAAS0klEQVR4nO2d+0PayNrHM2oTyAWCulqFXDQVzgmQRJGCiqJYvF9aao+rvm237Xbbnj277+75/394n8kFAiYBLJr2bb6t4RaTmU+ePPPMMzNIEGFJUtDIpIRWi+9RzD9a0yPS1A3BhV2d70jMP6YSYyNRYgohI0I/sEZLXiHDrs/3I4d8Aisi/4CyybemQK2xr2EfkR9OFvnESur1T5/Oz9b9wa6DzK37zZb9UUR+YLVbQoc8Ojs7e45WfI0+0VpZmUqsn620XLtsT5nUW9vrEflBJZYZC36b/Hoisf7pF3+jX0dwR0ydvXTtMbUClwJ+PXE2FZEfVJyi6GWecJMHuL+cB7gbBGyn1tvNMTy8WE+03rcw+e2I/MDKIDQXy+RIqU1+OjH15YW/t9n+klhxwLe2wc8kXj4HF3QOniaxjRsIk3wUz3uKLKbbosz+fikpO+SfP39+/to/tk+8P3/56cwGvzLVWlmf/qU11lp5v47Jr9jk52ShnwphUwhDbIxvK2NlWrSCQ/7T+fnzlr+vmf5pZf3sPGF6mpUXZ2Dz018SY+sr+GIkzhybNxheChRPC2FTCENssvN8AaGULokdP9/qCRh7tA5N8PoX2HfqZev9Gd51+sv0WOtFawxsfuXlwH6e/9HJk6kYQ2Kn7IptAriPTW9/gs+fv5+G8Gbq/dR0AtrUT9OJ1ot1HNY8N48RkfeVi7zoNIXu2MZfibPzT9uJ9V9+OktMrbSmVrB7SXyaHlt/cQYd35dng8fzPzz5tgYjj927uUm0zpyu1PT59JiVblh5mYjIB8qf/FhiOhi86xK0n6zYubbtbet1RN5XAeTvJCvX0LK7tRF5f42afKL7ISLvq1GT77kOEXlfReTDkh/5ESki7ytP8v89mxqRziLyfvIizy/899NPo9HriLyfvMhzPD3KuU4ReU95kScIsRgbmdJ98/MReZdEfmRi+5YhIh+WIvJhKSIfirgCwS4QLPPDjZOHT94wqBJV/fGGYkMnT2g49DSYsIvx4AqTvKDhgJPE5PUfb2pImOTlIubNJRFKlcMrRVgKjbzIMJSgqvCMQSgmhVSKEBUaeSampKpKCZ6JVaSHVIgwFaq30cwHTp+jwytEaAq/hSUIKSmGV4gBZHc1goIAjsV5kuBqcFxnS4RLXsXeXZQkWpAkNoTghrTO2e+y81YjJEq+RZTUohyjqGS6wPgfTLQ6i6RzGE/yPDMy9cmXSTldMf783z+NmKb67Mpa73cZFMfeQWIPOaffXA7uPnMZODOpEpzq0+fgC9S7P66aoL2/qgu0z9G4skSweI58gbdP70Fe1N8+HpHeFoMqxZeVi4PmUaNxdHT1xzvBE4FYZs07VGJc4CQ5PbQW0nzXgVkaDsxzmFxQGYkyjr/UNN7PyzY4mrpuNtYeZUGbq0cHl2nvC6RqBFfAwbNUtiriOSYln84PqqXAT2uPFdU/YGSSF1erm1lTj9YaB6m0x74ZnuAkbHW0CxxN5ehhpVGC219wNBC1zDjmXTySkXhVJGQ4uZpMw2Wic7d3Eos3V6uPso8sAfzGX4rWg5OBknOyKBaSOq6ILvqTF5biA2q8z56LqNSbiCw7lkP/fbC64ZQZSr159I7qBDlg5xzcAxIEnHwatwJlly3Rafh8SLECMuvMa2VO0ni+IBJ8rIjvJMqbPJ/RmSJPyFAK3uDhV+nb/T0y86XpqgPW2qubrhs9R7PwWhLA38jYv5ELweTHB1N9N3BPII966sUZqk3vZm/tUbdW/6o66EWNJmmdJCDs4TQFNxeFLvIcCTKJ4i3ZJed11/scLyCzzmRMJ6QMyWh48UAOm4HhTZ4rFDmREzF50axE7hZ5TqsebfRUIru5g1z+S5JVBlxVBirGmN0WNj0S8uP1+nDkObJEm/EZ8/fe5qPeQq+9qzo+pVggaIHEVLiCgKMQ7RZ5sSjLsk5KcrkLvagx1nXJFVkP8kRBIFSSo2lcUfP+K3mTJ0y3zGHyZR2HlrfJq9XmhuVlbFno36U6nlETGBwcJMFbFUw3xGTIvuQtfxKs05Ogq3SLvGYoyFB0jhCFg7WuMluFXm1/OYhGEwWN42VsWGaJPcjHUKyKMgzKWNcU3wHghUgEvgiz1nVP8mJVZOCegsOpusjiu9AbPKubZ0wCKJnheQ9vA5UwrSe7d7VnqrHRUwuC0CFuAMNRzOPh0xVzAS2sRT6+CMHJYh/0bztGH3dt/ciLvFTV8NAs/a5hFrJxuHP47Nmzw51VC/0bO5NAZlQirQIb7BgZkSfYoqv5dcineAkZQJ5RDKosskIyqaSJEkpRNHwuyjnOizyBnQGrweEKGgt+PpfxJs/T5u4CbBm8t1jujVpylw2r1IfoarXRaOxZ1vQo+wy1Gyy1CK2K2ZbwOo1blXRAVNkm/xa99SZv3grwE5+fcz6P12vmY8V8o+5DHiyslDNPa/uaDXSxuQH/9o6y9uuSZZgZhlUYgoZCk3IOSqy6Y862zUsaUoC8lCnLJZWNId1AbBEpmgR3gBpjvMnLcOXFArCUForwDhUcz/POhZF6TZ7UD2yHuYGuN7Ct2y1Xl9HzZlAm4/BVJXF0SfYlPx6vIO8GtF6v1cfxT3zpX+0ddi3a84A+Pv/YugBe5ClsOWrVshZcyAN4lj2yyWcPkBUZSJqkaZyEq20G0gXVdRCbfBKn9hkGFc3vQqLZmAHYcyISTGejCbw3eey8ONU5ntRvFNh2cyJtB2WcY/qScuSENavoFTwFE7IbLFTtCZBzTkRadJoA9zopp5foIu/txOsnj2vgi2ou8vHTeSuOrC9i8qc1s43wIG+p8D9rTqGbqInR2y/hSnT9gmw/MjTnypy0bV6jRU5FQtKgNUyeEouIJpFAmG6+0BXw2OQF2go8JLrnDP6SuvEQSZQ2L4J60WgHlE105QouwX56XZj9Ote+Im6bN0pW96ov+fHFpXilhsma5Gu78/EamPzu4uIiXJV4vbK4O74EL+q95AU7ES8uXLWDsY2di1V3RIwMd1/T7jeyKq63qti3aps8C49AXjaKMpCnFIu8UeA5TkqqXlElR1vXj2Os0zg3v1rKdPdx/cXg4cuCyNF/dQoOtWi4+iZHqLd7Zl04sZMDcZOn4YgQ7HP9yMfnT5Z2a6arx+QrJ7VKfXcpvrR0Mj8fr5/UF+d3d+eXFpfmb9k8i1AqA90iNtnsFHPz3Y47vryoduWMuwwuhlBSgkjBJi8oLIQyjKExihIzcqycFLWSyqVLlMpxtCz1kk8HJMdEAXAWeWtxZLBUa9piLPnK1SHZvHDVIttASp9VwJJKdfbImQes6nQ/8kuPTy1HjsnXT07B/k+xe1+EVrd+UjkZ313Cft/2NqIraZXCZ6DKasdDmk5yz/Xq8EYX/XJepmNP6VLB6kmxODdLcmZehyOsbhVh/sCmrIm93kaW/PNpfNGsPYZPBCeA9LS1Vj6muMlvNJ+5bt1VNCf3UbIkdJ5b5BU52Yf87mL8dHc8Xqtb5GsQygD5eOUUPqycLp3OL1bq87jFxeSrcrIt2bKWlPK3m/zaTtNl84fISPpINqxfp2TL5imUgqas3ZM121W8bb9hv8PZ5EsxfJQ5yvPg9iTeqtJ3mIaHvWI6TeY6jRWwfuX2Ng3v5q3rJnN5GwlXKl1g2T42X188jVfA6E/rlrepzFfGwdXHd+fhw5N6bbdyWqkvVdqxTTt1QhAp8xS02uVtrq7cPfCLG//85gK+Y6CEbT9f0OGeUhlGEiWVAfNnGVUVSV5VJdiaz0nYMo63MX267J3Dw7NPjKTul+V1SVd0M9Wbc/n5zYOmu4W96k/e7ecFYwH3GDrZA4gqvdrXyuLSeA1+KvV4xWxh6/E4OHUcxENUAw4HFDdjzF4/zyAlbXZK3C1s86ArjYBufLO2pFISzA5VuyfFmj2pkqGrSnUuKYkZZFQlPlZSKJVdKFEliZNSChXriipjnmlcnirJGXqgwTHaPgDzum3mG3tX5oMTVR6iviNObvIF1Wr2nZ7U7mP0uE9GzOxJ4f/QyJq3w25XHqeXfEGzsuyc9kfbRTZ21lyhcHYNlXxnPUlazkLTtnk9hrMHlKoKRiGDCnQ1ptIQ01MQ+KkUldFZTkMLRY3rT14q5vrPeu5l13RIN99s4ARIY9W+ECgVODBh/fbt9xzypxAYngZnD2pvnXjeyiKAsQeRb5uU+rrdk3q1irM2q0eW4WffBHwhTtsRtHtSMbnIqkiHTo3MqiVdT2kcQSZTsq6X+UJMSTIkLygKXIC+5IcbjeRwMMpptqPPHl02G6Aj29dDUFnqG6J+Va4yvngavKdvT4pP2u5m7frZER5Ie/XGziZcogFmFrdtHvt2FWU4XjbKls0z2OZ1Bu4OWsMZeV7TqFSuP/nhxKXwoRjFMvrNi3fPrq+vn11cW45/48/+bv4ryVeWApPE/uQJzeo+ZY8Odyw1N+2maW4AMLQT21g9KZ0jc5af1y0/P0cZGi9QSjXH0UqsRPGjJc9LzJwqsQSXsVBvrDqyU5cI9T/HV+bn5yt3s3k47x+buNCba7asMq9e9m+aiPbICINjF5JVocsEsY3ajm3gOcPjdxiRY1UVfz5S8mlFQQoe9ONjVi26U91Hl7d6sB76OpuH2PGO5Imcsdc7mgPN6yFCg/Th22NSZPuB60TyZG+Ezw0Q2wwjlpWqkjkZIlc66BkMhFj+AqEBYqSvG4cdt4dPAsZhfT1e5vKqp9DZtR2EPEaZb8smP4zuw8+DtNThprsW2WwTwA8yTdRn7kFtsJkHtVrwjrUTf/JcGr1yo89mG8/QrRSft+j0QLt113Sk5GUnzirfXO51Mq3Z1Z3UIE6e8JlvI6B/zY1GKX/y+FsaL69s3whlXnt1iZDmu3NXvWk0/OpQqjRC8i5JNwi9WTO9/MbRDk5uDNYv8J7dx6VHtxI5IL7C6dZXDdwHWWte431V/327JOrVuxTlXsgThJlru7i+vjRPMpjx+M6rzKDUqCT3LbSjzOC9GTZ2F/L6/ZCHvrlSvQHNVWPawCvtQl8nxchGaa5aMmT6oea03gN5Ao9x0ar/nFcPhUnemdDMaQMFNKPS/ZAn00MuAgiTvG4P5vMPu2ZkhOQ5UXTG91g0ZLwV7go165FBwkOuQx4heSa9sGDNUyNyKDlcrjPEFWoSJTAYAikgY9CgZhQaKfl02iJPxlBpOHcTGnkpLVeNJM5vsBB19M1mj1Cj9PPWSBthjhAO6TNDIw/d/2TGdJJlKHRy0BkXI9C9tLA4PKaGWlsavp/n8NDzQ64OvA/yXAkNu546TPLWXCPe6uQ8XBt7H+QZlJpLObMHB1PoPSmikMkJGbr4cO7mPsgXaGahyBSGcTfhk2dJspgjxO/b5kWCzNDOMs/BFD55vMrrQdeA31MfNvMd9WEdReTDUkTekZQc3bdVDlLLiLyj3M+zo9LPg6SRIvKOcv+cGJWe/MfonxiIyDsaJfnA0UBbEXlHdyY/aT/k4cnkpE2+/6SfiLyju5Kf/Gg9LO9P5mE7GZEPUgD5SaxhwE9+xr8zkZ+dmJ2dmJjNR+SD5E8+f/zkyfHMcj4I9eSE41Zg//2Zmcmt/WX42X+yNRmR7yN/8stPPz75/PvTj1t+dj+5NbMFXmV2dt98eZw/zm8dT+5Pzkzsz8LvzETkAxVEfhbayq3Pv235kZ9BcFX2n5jGDa/yn/Ofl6F1nZlYxuQjmw+WizzrfGtShzx2Iv/+1c/oZ36HvRx3BE5mZhleYfJ5uBeWoxY2WO6/lWkki/g7EbrJT858WPYh//vMxOx++7KY7XEeux/z+ZZ5RSLyvnJ7GxkhQ9AkQnWTn1hGsz7e5sPy7G8e7+fzzmZA8uSPSR6lF2ylzXW+KUWIzQxEfvnpVh6ZjQCE7xNbM46Oj83Nse3n+y5Dl5hhp2d9nb4R8lxnOb8kmCOiVV0fzNscQwPwxOw85fcx/V7Zfr7a9w+wy8mHnG7zrZB3C6++lxmR625hn372aWF/xQ4dAfT8rOvaLB9PuLoAOG9Din31oF/Q+u2RF5FBmyOJDnnsSbY++Jl8/jccx3/4FSKZZdcu+zP5mS7yAyzWelh9e+R5Z86CQx799hShD/ve4PfBlU+ChR9vTeQ7Hd39rSfLs587Rh+RH0qu7MGsD3c/fZz4PLHs6npF5IfS3fPzs7MTnydnuv18RH5w3Z388tby8dZMPvI2d9RXjEmZmfnI5u+q0Y4GRuQHV+6fkyNSRH445X6eGZU+RuSHEa/Jd1lt6qOI/DBS77TE2lvfwPTBbn3T5Fl16D8m4atv7m8xftPk/18rIh+WIvJhKSIfliLyYSkiH5Yi8mEpIh+WIvJhKSIfliLyYSkiH5Yi8mEpIh+WIvJhKSIfliLyYSkiH5Yi8mEpIh+WIvJhKSIflu6L/IN+ofh3qfv6FnSDihQs/79LaOv/AKVSN6O9zuKTAAAAAElFTkSuQmCC)
 
-## Basic Build Instructions
+where
+`r(t)` is the input/desired state
 
-1. Clone this repo.
-2. Make a build directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./pid`. 
+`y(t)` is the current state
 
-Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
+`u(t)` is the control signal
 
-## Editor Settings
+`e(t) = r(t)-y(t)` is the error in states
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+Following is the PID equation
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+![PID_equations](http://wiki.theuavguide.com/images/thumb/7/7d/PIDController_Equation.png/300px-PIDController_Equation.png)
 
-## Code Style
+Here we need to tune `Kp`, `Ki`, `Kd` to achieve a step response
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+![pid_response](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/PID_varyingP.jpg/320px-PID_varyingP.jpg)
 
-## Project Instructions and Rubric
+checkout [wikipedia](https://en.wikipedia.org/wiki/PID_controller) for more detail
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+## Code
+This code talks with the Udacity Simulator over webSocket over port 1234
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+### `src/main.cpp`
+This is the main file which has web Socket handlers and creates a client and connects to the simulator
 
-## Hints!
+### `src/Utils.cpp`
+This file contains util functions and a *CarController* class.
+The *CarController* class implements two pid controllers, one for steering and one
+for throttle. It takes a json object and parses the states obtained from the simulator.
+the *processController* is a higher level controller method which uses both the pid
+controllers to generate a `u(t)` as a json.
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+### `src/PID.cpp`
+This file implements a simple pid controller which is then used by CarController.
