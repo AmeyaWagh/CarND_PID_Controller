@@ -3,13 +3,22 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
-Video
+
+![pid_gif](./docs/giphy.gif)
+
+
+
+
+[youtube_link](https://www.youtube.com/watch?v=vJW2Oj18J2g&feature=youtu.be)
+
+
+
 
 ## PID Controller
 The Proportional Integral derivative controller is a highly robust controller used
 in large number of control systems applications.
 
-![PID_controller](https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PID_en.svg/400px-PID_en.svg.png)
+![PID_controller](./docs/PID_eqn.png)
 
 where
 `r(t)` is the input/desired state
@@ -22,11 +31,11 @@ where
 
 Following is the PID equation
 
-![PID_equations](http://wiki.theuavguide.com/images/thumb/7/7d/PIDController_Equation.png/300px-PIDController_Equation.png)
+![PID_equations](./docs/eqn.png)
 
 Here we need to tune `Kp`, `Ki`, `Kd` to achieve a step response
 
-![pid_response](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/PID_varyingP.jpg/320px-PID_varyingP.jpg)
+![pid_response](./docs/response.jpg)
 
 checkout [wikipedia](https://en.wikipedia.org/wiki/PID_controller) for more detail
 
