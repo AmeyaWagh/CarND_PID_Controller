@@ -29,15 +29,50 @@ where
 
 `e(t) = r(t)-y(t)` is the error in states
 
+### P controller
+The output signal varies proportional to the input signal
+`u = Kp*e`. proportional controllers tend to oscillate and do not converge to a value.
+
+### PD controller
+To make the controller converge faster, derivative of error is used with the P controller. 
+PD Controllers `u = Kp*e + Kd*(de/dt)`
+
+
+### PID Controller
+For and controller, the step response needs to converge in 2% to 5% of the error margin. 
+It is difficult to tune PD Controllers to such a precision. By summing up the errors over time,
+the oscillations are damped to make the signal conerge in the given error margin.
+
 Following is the PID equation
 
 ![PID_equations](./docs/eqn.png)
+
 
 Here we need to tune `Kp`, `Ki`, `Kd` to achieve a step response
 
 ![pid_response](./docs/response.jpg)
 
+
+## Tuning PID Controller
+The Car controller has 2 PID controllers, one for steering and one for throttle. 
+The PID Gains were manually tune by first keeping the throttle constant and vary 
+Kp_steering to keep the car on track. Later Kd_steering was changed to keep the 
+car centered but it still oscillated. Ki_steering was then tuned to reduce those 
+oscillations. Similar parameters were used as initial gains for throttle controller
+and observed if the car slows down while turning and accelerates on the road. Then 
+the steering was were again fine tuned with dynamic throttle to achieve good control. 
+
+Final Gains
+
+|Controller | Kp  | Ki | Kd |
+|---|---|---|---|
+|Steering| 0.08  | 0.0005  | 1.0  |
+|Throttle| 0.40  | 0.0020  | 15.8  |
+
 checkout [wikipedia](https://en.wikipedia.org/wiki/PID_controller) for more detail
+
+
+---
 
 ## Code
 This code talks with the Udacity Simulator over webSocket over port 1234
